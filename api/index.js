@@ -18,7 +18,7 @@ var PORT = process.env.PORT || 3000
 /* Initilisation */
 var app = express()
 
-/* Controlled */
+/* Controller */
 app.use('/createDux',createDux)
 
 

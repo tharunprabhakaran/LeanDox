@@ -12,11 +12,12 @@
 var express = require('express')
 var router = express.Router()
 
-// define the home page route
+//CreateDux Landing Page
 router.get('/', function (req, res) {
   res.send('Create Dux Landing Page')
 })
-// define the about route
+
+//CreateDux Helper Page
 router.get('/help', function (req, res) {
   res.send('Create Dux help')
 })
