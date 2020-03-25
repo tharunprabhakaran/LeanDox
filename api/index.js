@@ -15,11 +15,24 @@ var createDuxRouter = require('./lib/createDux/createDux')
 var queryDuxRouter = require('./lib/queryDux/queryDux')
 var displayDuxRouter = require('./lib/displayDux/displayDux')
 
+/* Middleware Imports */
+var logger = require('./bin/middlewares/logging/logger')
+var serviceIDValidator = require('./bin/middlewares/serviceIDValidator/serviceIDValdiator')
 /* Global Constants */
 var PORT = process.env.PORT || 3000
 
 /* Initilisation */
 var app = express()
+
+
+/* Middleware */
+
+// 1. Logger
+app.use(logger.log)
+
+// 2.  ServiceID Validation 
+app.use(serviceIDValidator.validate)
+
 
 /* Controller */
 
