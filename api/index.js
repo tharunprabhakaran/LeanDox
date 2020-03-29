@@ -7,17 +7,18 @@
 
 /* Import */
 var express = require('express');
+var bodyParser = require('body-parser')
 var fs = require('fs');
 
 /* Module Imports */
 var defaultRouter = require('./lib/default/default')
-var createDuxRouter = require('./lib/createDux/createDux')
-var queryDuxRouter = require('./lib/queryDux/queryDux')
-var displayDuxRouter = require('./lib/displayDux/displayDux')
+var Dux = require('./lib/Dux/Dux')
+var IAM = require('./lib/IAM/IAM')
+
 
 /* Middleware Imports */
 var logger = require('./bin/middlewares/logging/logger')
-var serviceIDValidator = require('./bin/middlewares/serviceIDValidator/serviceIDValdiator')
+
 /* Global Constants */
 var PORT = process.env.PORT || 3000
 
@@ -27,11 +28,13 @@ var app = express()
 
 /* Middleware */
 
-// 1. Logger
+//1. Body-Parser
+app.use(bodyParser.json())
+// 2. Logger
 app.use(logger.log)
 
 // 2.  ServiceID Validation 
-app.use(serviceIDValidator.validate)
+//app.use(serviceIDValidator.validate)
 
 
 /* Controller */
@@ -39,15 +42,11 @@ app.use(serviceIDValidator.validate)
 // DEFAULT Router
 app.use("/", defaultRouter)
 
-// CreateDux Router
-app.use('/createDux',createDuxRouter);
+// Dux Router
+app.use('/dux',Dux);
 
 // QueryDux Router
-app.use('/queryDux',queryDuxRouter);
-
-//Display Router
-app.use('/displayDux',displayDuxRouter);
-
+app.use('/userManagement',IAM);
 
 
 /* Server Startup*/

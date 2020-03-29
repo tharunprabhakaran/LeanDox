@@ -9,18 +9,18 @@
 
  /* Imports */
  var express = require('express')
- var queryDuxRouter = express.Router()
+ var IAM = express.Router()
 
  /* Routables */
 
  // QueryDux Landing Page
- queryDuxRouter.get("/", (Request, Response) => {
+ IAM.get("/", (Request, Response) => {
      Response.json("QueryDux Landing Page");
  })
 
  // QueryDux Helper Page
- queryDuxRouter.get("/help", (Request, Response) => {
+ IAM.post("/", (Request, Response) => {
      Response.json("QueryDux Helper Page")
  })
 
- module.exports = queryDuxRouter
+ module.exports = IAM
