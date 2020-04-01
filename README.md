@@ -14,7 +14,7 @@ Thin and light weight framework to host rich media documents.
 
  - Express 4.17.1
  - Editor.js
- - Nedb 1.8.0
+ - Nedb 1.8.0 (Persistent)
  - React
 
 # Road Map
