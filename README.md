@@ -39,5 +39,5 @@ Thin and light weight framework to host rich media documents.
 | Primary Actor | Repository architect, implementer, repository admin, user    |
 | Scope         | The scope of the project. Example: architecture, access      |
 | Level         | The priority the use case should be given; High, Medium, Low |
-| Story         | This is a [user story].                                      |
+| Story         | Describing the use case                                      |
 
