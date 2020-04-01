@@ -10,9 +10,8 @@
 
  /**
   * @todo
-  * - Dux Delete
   * - Create Request Schema Valdidation
-  * - Remove Hash from CreateDux Sucess Response
+  * - 
   */
 
 /* Imports */
@@ -29,10 +28,10 @@ DB = new Datastore({ filename: './DUX.neDB', autoload: true });
  * Fetch Dux
  * Fetches the DUX for a given ID
 */
-Dux.get('/:DuxID', function (Request, Response) {
+Dux.get('/', function (Request, Response) {
 
     /* Check if Dux Exitst */
-    DuxID = Request.params.DuxID 
+    DuxID = Request.query.id 
     DuxQueryPromise =  new Promise( (resolve, reject) => {
         DB.findOne({ _id: DuxID },  function (err, doc) {
             if(err){ reject(err) }
@@ -43,7 +42,8 @@ Dux.get('/:DuxID', function (Request, Response) {
     /* Handle Response */
     DuxQueryPromise.then( data => {
         if(data){
-            data.staus = "success"
+            data.status = "success"
+            delete data["hash"] //Hide Hash of the DUX
             Response.json(data)
         }
         else{
@@ -65,6 +65,56 @@ Dux.get('/:DuxID', function (Request, Response) {
         }
         Response.json(DuxQueryResponse)
     })
+})
+
+/**
+ * Fetch All Dux Details
+ */
+Dux.get('/fetchAllId', function (Request, Response) {
+    
+    /* Query for Dux ID's */
+    DuxQueryPromise =  new Promise( (resolve, reject) => {
+        DB.find({},  function (err, doc) {
+            if(err){ reject(err) }
+            else{ resolve(doc) }
+        })
+    });
+
+    /* Handle Response */
+    DuxQueryPromise.then( data => {
+        console.log(data)
+        if(data){
+            data.staus = "success"
+            var stripedData = data.map( (dux) => {
+                var stripedDux = {
+                    "meta":dux.meta,
+                    "id":dux._id,
+                    "title":dux.title
+                }
+                return stripedDux
+            })
+            Response.json(stripedData)
+        }
+        else{
+            DuxQueryResponse ={
+                "status": "failure",
+                "errorCode": "FATEC1001",
+                "errorMessage": "No Dux Found"
+            }
+            Response.json(DuxQueryResponse)
+        }
+    })
+
+    /* Erro Handling for Quering Data */
+    DuxQueryPromise.catch( err => {
+        DuxQueryResponse ={
+            "status": "failure",
+            "errorCode": "FATEC1002",
+            "errorMessage": err
+        }
+        Response.json(DuxQueryResponse)
+    })
+
 })
 
 /**
@@ -123,7 +173,43 @@ Dux.post('/', function (Request, Response) {
 
 //Delete Dux
 Dux.delete('/', function (Request, Response) {
-    Response.json('Create Duxx help')
+     
+    /* Check if Dux Exitst */
+     DuxID = Request.query.id 
+     DuxQueryPromise =  new Promise( (resolve, reject) => {
+        DB.remove({ _id: DuxID }, {},  function (err, doc) {
+             if(err){ reject(err) }
+             else{ resolve(doc) }
+         })
+     });
+ 
+     /* Handle Response */
+     DuxQueryPromise.then( data => {
+         if(data){
+             data.staus = "success"
+             Response.json(data)
+         }
+         else{
+             DuxQueryResponse ={
+                 "status": "failure",
+                 "errorCode": "DDTEC1001",
+                 "errorMessage": "No Dux Found"
+             }
+             Response.json(DuxQueryResponse)
+         }
+     })
+ 
+     /* Erro Handling for Quering Data */
+     DuxQueryPromise.catch( err => {
+         DuxQueryResponse ={
+             "status": "failure",
+             "errorCode": "DDTEC1002",
+             "errorMessage": err
+         }
+         Response.json(DuxQueryResponse)
+     })
+
+    
 })
 
 
